@@ -1,0 +1,146 @@
+:root {
+  --primary-color: #193178;
+  --secondary-color: #195dfa;
+  --background-color: #EFEFEF;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --white-color: #FFF;
+  --black-color: #000;
+  --input-border-color: #E3E4E6;
+  --transition-3s: 0.3s;
+}
+
+/*GLOBAL STYLES */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* REUSABLE ELEMENT */
+a{
+  text-decoration: none;
+  color: var(--black-color);
+  transition: var(--transition-3s);
+}
+a:hover{
+  text-decoration: underlone;
+}
+
+body{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #eaf1fb 0%, #f8fafc 50%, #dce9fb 100%);
+}
+/* AUTH HEADER AND FOOTER */
+.auth-header{
+  text-align: center;
+  margin-bottom: 32px;
+}
+.auth-header h1{
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--black-color);
+  margin-bottom: 8px;
+}
+.auth-header p{
+  font-size: 16px;
+  font-weight: 400;
+  color: #334155;
+}
+.auth-footer{
+  text-align: center;
+  margin-top: 32px;
+}
+.auth-footer p{
+  font-size: 14px;
+  font-weight: 400;
+  color: #334155;
+}
+
+/* WRAPPER */
+.wrapper{
+  position: relative;
+  width: 450px;
+  height: 500px;
+  background-color: var(--white-color);
+  border-radius: 15px;
+  padding: 40px 32px 64px;
+  box-shadow: 0 8px 15px var(--shadow-color);
+  transition: var(--transition-3s);
+}
+
+/* TITLES */
+.titles{
+  position: relative;
+}
+.title-signin{
+  position: relative;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+/* INPUT FIELDS */
+.input-box{
+  position: relative;
+  display: flex;
+  font-size: 14px;
+  font-weight: 500;
+  flex-direction: column;
+  margin: 20px 0;
+}
+.input-box label{
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 4px;
+}
+.input-wrapper{
+  position: relative;
+  display: flex;
+  padding: 10px 0;
+}
+.input-field{
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  background: transparent;
+  color: var(--black-color);
+  padding: 0 20px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 10px;
+  outline: none;
+  transition: var(--transition-3s);
+}
+
+/* SUBMIT BUTTON */
+.btn-submit{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  width: 100%;
+  height: 50px;
+  background-color: var(--secondary-color);
+  color: var(--white-color);
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition-3s);
+}
+
+/* FORGOT PASSWORD */
+.form-cols{
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  font-size: 14px;
+}
+.form-cols a{
+  color: var(--secondary-color);
+}
