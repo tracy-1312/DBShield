@@ -9,7 +9,7 @@ from typing import Optional
 
 from sqlalchemy import Date, DateTime, ForeignKey, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
+from encryption import EncryptedText
 from db import Base
 
 
@@ -49,8 +49,8 @@ class PatientRecord(Base):
 
     # Encrypted at rest in step 2 — stays Text, but holds a Fernet token
     # rather than readable notes.
-    medical_notes: Mapped[Optional[str]] = mapped_column(Text)
-
+    
+    medical_notes: Mapped[Optional[str]] = mapped_column(EncryptedText)
     assigned_doctor: Mapped[Optional[str]] = mapped_column(String(100))
     last_modified: Mapped[datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now(), onupdate=func.now()
