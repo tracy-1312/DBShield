@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="auth-header">
+      <h1>DBShield</h1>
+      <p>Healthcare Data Protection System</p>
+    </div>
+    <div class="wrapper">
+      <div class="titles">
+        <div class="title-signin">Sign In</div>
+      </div>
+      <form action="../../dashboard/admin-dashboard.html" class="login-form" autocomplete="off">
+        <div class="input-box">
+          <label for="log-username" class="label">Username</label>
+          <div class="input-wrapper">
+            <input type="text" class="input-field" id="log-username" placeholder="Enter your username">
+          </div>
+        </div>
+        <div class="input-box">
+          <label for="log-pass" class="label">Password</label>
+          <div class="input-wrapper">
+            <input type="password" class="input-field" id="log-pass" placeholder="Enter your password">
+          </div>
+        </div>
+        <div class="input-box">
+          <button class="btn-submit" id="SignInBtn">Sign In</button>
+        </div>
+        <div class="form-cols">
+          <div class="col-1"></div>
+          <div class="col-2">
+            <a href="#">Forgot password?</a>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="auth-footer">
+      <p>Secure access to patient data management</p>
+    </div>
+    <script src="js/script.js"></script>
+  </body>
+</html>
