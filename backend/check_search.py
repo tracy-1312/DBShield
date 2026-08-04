@@ -1,8 +1,8 @@
 """Show the same search returning different results per user clearance."""
 
-from db import get_session
-from models import User
-from search import get_record, search_records
+from backend.db import get_session
+from backend.models import User
+from backend.search import get_record, search_records
 
 with get_session() as session:
     for username in ("jsmith", "mbrown", "kwong"):

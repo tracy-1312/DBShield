@@ -1,5 +1,5 @@
-from db import get_session
-from models import AccessLog, PatientRecord, User
+from backend.db import get_session
+from backend.models import AccessLog, PatientRecord, User
 
 with get_session() as session:
     print(f"users:           {session.query(User).count()}")

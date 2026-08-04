@@ -9,8 +9,8 @@ from typing import Optional
 
 from sqlalchemy import Date, DateTime, ForeignKey, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from encryption import EncryptedText
-from db import Base
+from backend.encryption import EncryptedText
+from backend.db import Base
 
 
 class User(Base):

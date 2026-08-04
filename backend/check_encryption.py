@@ -2,8 +2,8 @@
 
 from sqlalchemy import text
 
-from db import get_session
-from models import PatientRecord
+from backend.db import get_session
+from backend.models import PatientRecord
 
 with get_session() as session:
     print("=== RAW SQL — what is actually stored on disk ===")

@@ -4,8 +4,8 @@ Values are written through the model, so EncryptedText encrypts them
 automatically on the way into MySQL.
 """
 
-from db import get_session
-from models import PatientRecord
+from backend.db import get_session
+from backend.models import PatientRecord
 
 NOTES = {
     "PT-00123": "Routine check-up. Blood pressure slightly elevated, monitor at next visit.",

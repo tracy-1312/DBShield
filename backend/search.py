@@ -10,8 +10,8 @@ from typing import Optional
 
 from sqlalchemy import or_
 
-from db import get_session
-from models import AccessLog, PatientRecord, User
+from backend.db import get_session
+from backend.models import AccessLog, PatientRecord, User
 
 
 def _scope_to_clearance(query, user: User):
