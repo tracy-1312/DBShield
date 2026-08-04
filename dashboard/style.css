@@ -149,20 +149,13 @@ body{
 
 .stat-card{
   background-color: var(--white-color);
-  border-radius: 14px;
-  padding: 20px;
+  border-radius: 10px;
+  padding: 30px;
   box-shadow: 0 2px 8px var(--shadow-color);
 }
 
-.stat-card-top{
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 12px;
-}
-
 .stat-label{
-  font-size: 13px;
+  font-size: 14px;
   color: #6B7280;
 }
 
@@ -176,7 +169,7 @@ body{
 }
 
 .stat-value{
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 700;
   color: #111827;
   margin-bottom: 6px;
@@ -191,14 +184,14 @@ body{
 .stat-status{ font-size: 13px; color: #6B7280; }
 
 /* QUICK ACCESS */
-.quick-access{
+.quick-access-wrapper{
   background-color: var(--white-color);
   border-radius: 14px;
   padding: 28px;
   box-shadow: 0 2px 8px var(--shadow-color);
 }
 
-.quick-access h2{
+.quick-access-wrapper h2{
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 20px;
@@ -229,7 +222,7 @@ body{
   filter: brightness(0.97);
 }
 
-.quick-card-text h3{
+.quick-card-label{
   display: flex;
   align-items: center;
   gap: 8px;
@@ -239,7 +232,7 @@ body{
   margin-bottom: 4px;
 }
 
-.quick-card-text p{
+.quick-card-text{
   font-size: 13px;
   color: #6B7280;
 }
