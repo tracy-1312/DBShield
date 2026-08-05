@@ -15,7 +15,7 @@
       <div class="titles">
         <div class="title-signin">Sign In</div>
       </div>
-      <form action="../../dashboard/admin-dashboard.html" class="login-form" autocomplete="off">
+      <form id="login-form" class="login-form" autocomplete="off">
         <div class="input-box">
           <label for="log-username" class="label">Username</label>
           <div class="input-wrapper">
@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="input-box">
-          <button class="btn-submit" id="SignInBtn">Sign In</button>
+          <button type="submit" class="btn-submit" id="SignInBtn">Sign In</button>
         </div>
         <div class="form-cols">
           <div class="col-1"></div>
@@ -37,11 +37,12 @@
             <a href="#">Forgot password?</a>
           </div>
         </div>
+        <p id="login-error" style="color:#c0392b; display:none; margin-top:10px;"></p>
       </form>
     </div>
     <div class="auth-footer">
       <p>Secure access to patient data management</p>
     </div>
-    <script src="js/script.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
