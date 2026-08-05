@@ -76,12 +76,12 @@ CREATE INDEX idx_logs_user      ON access_logs (user_id);
 CREATE INDEX idx_logs_timestamp ON access_logs (timestamp);
 
 INSERT INTO users (username, password_hash, full_name, email, role, clearance_level) VALUES
-('jsmith',   '$2b$12$RdOCxEwpUkCFOccvfr9ZLOyY2k4gGaZoksw1OH6fRFa52AhTJ7aXi', 'John Smith',    'jsmith@hospital.com',   'admin',        4),
-('sjohnson', '$2b$12$A2dRdjfJ9cxfvWxacmBMpe9pPTqE8zecODVU76fSDLyN5DEcgYxnG', 'Sarah Johnson', 'sjohnson@hospital.com', 'data_manager', 2),
-('mbrown',   '$2b$12$HmwJNjJgQwy/7Ge87PXTlOHLBUf90Ki.ESWNfCnrCUxf7Ke4zjMRS', 'Michael Brown', 'mbrown@hospital.com',   'data_manager', 3),
-('edavis',   '$2b$12$A59OgHKGauBLrFkzH.P4/.9MTOoedpdS0Vj/f79kHRJLyfl3hJyaW', 'Emily Davis',   'edavis@hospital.com',   'data_manager', 1),
-('rwilson',  '$2b$12$qT.eh0eztef06vL2XzzhLu2af.aXGI1145Sw6KRIoDvZ8xF3omEbu', 'Robert Wilson', 'rwilson@hospital.com',  'viewer',       3),
-('kwong',    '$2b$12$dingL19Wc9Ia.3uEnjKkf.3hdLH9.cao.qVAt6Hcheux4Em2heFK.', 'Karen Wong',    'kwong@hospital.com',    'viewer',       1);
+('jsmith',   '$2b$12$HqzbOm5PE/cAFbLfPgwot.J1PgQO21UBhZ5baTNxYN1eX6ecrIsIm', 'John Smith',    'jsmith@hospital.com',   'admin',        4),
+('sjohnson', '$2b$12$HqzbOm5PE/cAFbLfPgwot.J1PgQO21UBhZ5baTNxYN1eX6ecrIsIm', 'Sarah Johnson', 'sjohnson@hospital.com', 'data_manager', 2),
+('mbrown',   '$2b$12$HqzbOm5PE/cAFbLfPgwot.J1PgQO21UBhZ5baTNxYN1eX6ecrIsIm', 'Michael Brown', 'mbrown@hospital.com',   'data_manager', 3),
+('edavis',   '$2b$12$HqzbOm5PE/cAFbLfPgwot.J1PgQO21UBhZ5baTNxYN1eX6ecrIsIm', 'Emily Davis',   'edavis@hospital.com',   'data_manager', 1),
+('rwilson',  '$2b$12$HqzbOm5PE/cAFbLfPgwot.J1PgQO21UBhZ5baTNxYN1eX6ecrIsIm', 'Robert Wilson', 'rwilson@hospital.com',  'viewer',       3),
+('kwong',    '$2b$12$HqzbOm5PE/cAFbLfPgwot.J1PgQO21UBhZ5baTNxYN1eX6ecrIsIm', 'Karen Wong',    'kwong@hospital.com',    'viewer',       1);
 
 INSERT INTO patient_records
     (patient_id, full_name, date_of_birth, category, classification_level, contact_number, email, assigned_doctor) VALUES

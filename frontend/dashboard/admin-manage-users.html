@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DBShield - Manage Users</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body data-page="admin-users">
+    <div class="db-layout">
+      <aside class="sidebar">
+        <div class="sidebar__brand">
+          <span class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3.25 18.5 6v5.15c0 4.28-2.64 7.83-6.5 9.6-3.86-1.77-6.5-5.32-6.5-9.6V6L12 3.25Z"></path>
+            </svg>
+          </span>
+          <span>
+            <strong>DBShield</strong>
+            <small>Admin Portal</small>
+            <small class="sidebar-user-level" id="sidebar-user-level">Clearance Level -</small>
+          </span>
+        </div>
+
+        <nav class="side-nav" aria-label="Main navigation">
+          <a class="side-nav__item " href="admin-dashboard.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="4" y="4" width="6" height="6" rx="1"></rect>
+              <rect x="14" y="4" width="6" height="6" rx="1"></rect>
+              <rect x="4" y="14" width="6" height="6" rx="1"></rect>
+              <rect x="14" y="14" width="6" height="6" rx="1"></rect>
+            </svg>
+            Dashboard
+          </a>
+          <a class="side-nav__item " href="admin-search.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-3.5-3.5"></path>
+            </svg>
+            Admin Search
+          </a>
+          <a class="side-nav__item side-nav__item--active" href="admin-manage-users.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            Manage Users
+          </a>
+          <a class="side-nav__item " href="admin-manage-data.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+              <path d="M3 5v14a9 3 0 0 0 18 0V5"></path>
+              <path d="M3 12a9 3 0 0 0 18 0"></path>
+            </svg>
+            Manage Data
+          </a>
+        </nav>
+
+        <div class="logout">
+          <a class="side-nav__item" href="../auth/sign_in/index.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <path d="M16 17l5-5-5-5"></path>
+              <path d="M21 12H9"></path>
+            </svg>
+            Log Out
+          </a>
+        </div>
+      </aside>
+
+      <main class="content content--management">
+        <header class="page-title page-title--actions">
+          <div>
+            <h1>Manage Users</h1>
+            <p>Add, edit, and assign roles to hospital staff</p>
+          </div>
+          <button class="primary-button management-toggle" type="button" id="add-user-toggle">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 5v14"></path>
+              <path d="M5 12h14"></path>
+            </svg>
+            Add User
+          </button>
+        </header>
+
+        <section class="management-form-card" id="add-user-card" hidden>
+          <div class="management-card-header">
+            <h2 id="user-form-title">Add New User</h2>
+            <button class="icon-button" type="button" id="cancel-user-x" aria-label="Close user form">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18 6 6 18"></path>
+                <path d="m6 6 12 12"></path>
+              </svg>
+            </button>
+          </div>
+          <form class="management-form" id="user-form">
+            <input type="hidden" id="user-id">
+            <label>
+              <span>Username</span>
+              <input id="user-username" type="text" placeholder="Enter username" required>
+            </label>
+            <label>
+              <span>Full Name</span>
+              <input id="user-full-name" type="text" placeholder="Enter full name" required>
+            </label>
+            <label>
+              <span>Email</span>
+              <input id="user-email" type="email" placeholder="Enter email" required>
+            </label>
+            <label>
+              <span>Role</span>
+              <select id="user-role" required>
+                <option value="">Select role</option>
+                <option value="admin">Admin</option>
+                <option value="data_manager">Staff</option>
+                <option value="viewer">Specialist</option>
+              </select>
+            </label>
+            <label>
+              <span>Classification Level</span>
+              <select id="user-clearance" required>
+                <option value="">Select classification</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Level 4</option>
+              </select>
+            </label>
+            <label>
+              <span>Password</span>
+              <input id="user-password" type="password" placeholder="Enter password">
+            </label>
+            <p class="management-message" id="user-form-message" role="status"></p>
+            <div class="management-form-actions">
+              <button class="primary-button" type="submit" id="user-submit-button">Create User</button>
+              <button class="secondary-button" type="button" id="cancel-user-button">Cancel</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="management-card">
+          <div class="management-card-header management-card-header--lined">
+            <h2>User List</h2>
+            <span id="users-count">0 users</span>
+          </div>
+          <div class="table-scroll">
+            <table class="records-table management-table">
+              <caption>User list</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Username</th>
+                  <th scope="col">Full Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">Classification</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="users-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="app.js?v=20260805-admin-management"></script>
+  </body>
+</html>
