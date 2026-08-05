@@ -2,7 +2,8 @@
 // Adjust these paths to match where your dashboard files actually live.
 const ROLE_REDIRECTS = {
   admin: "../../dashboard/admin-dashboard.html",
-  staff: "../../dashboard/staff-dashboard.html",
+  data_manager: "../../dashboard/staff-dashboard.html",
+  viewer: "../../dashboard/staff-dashboard.html",
 };
 
 const form = document.getElementById("login-form");

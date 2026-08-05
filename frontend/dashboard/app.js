@@ -50,7 +50,7 @@ function wrapId(id) {
 function actionCell(record) {
   if (record.access === "permitted") {
     return `
-      <a class="action-button action-button--view" href="record-detail.html" aria-label="View ${record.name}">
+      <a class="action-button action-button--view" href="staff-search-record-detail.html" aria-label="View ${record.name}">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path>
           <circle cx="12" cy="12" r="3"></circle>
@@ -94,7 +94,7 @@ function renderSearchResults() {
 
   body.innerHTML = filtered.map((record) => `
     <tr>
-      <td><a class="patient-link" href="record-detail.html">${wrapId(record.id)}</a></td>
+      <td><a class="patient-link" href="staff-search-record-detail.html">${wrapId(record.id)}</a></td>
       <td>${record.name.replace(" ", "<br>")}</td>
       <td>${record.dob.replaceAll("-", "-<br>")}</td>
       <td>${record.category}</td>
@@ -177,7 +177,7 @@ let levelFilter = "all";
 
 function adminActionCell(record) {
   return `
-    <a class="action-button action-button--view" href="record-detail.html?id=${record.id}" aria-label="View or edit ${record.name}">
+    <a class="action-button action-button--view" href="staff-search-record-detail.html?id=${record.id}" aria-label="View or edit ${record.name}">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path>
         <circle cx="12" cy="12" r="3"></circle>
@@ -210,7 +210,7 @@ function renderAdminSearchResults() {
 
   body.innerHTML = filtered.map((record) => `
     <tr>
-      <td><a class="patient-link" href="record-detail.html?id=${record.id}">${wrapId(record.id)}</a></td>
+      <td><a class="patient-link" href="staff-search-record-detail.html?id=${record.id}">${wrapId(record.id)}</a></td>
       <td>${record.name.replace(" ", "<br>")}</td>
       <td>${record.dob.replaceAll("-", "-<br>")}</td>
       <td>${record.category}</td>
