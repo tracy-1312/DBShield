@@ -1,120 +1,247 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0", maximum-scale="1.0">
-    <title>Sign In & Sign Up</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DBShield - Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
   </head>
-  <body>
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <div class="brand-logo">
+  <body data-page="dashboard">
+    <div class="db-layout">
+      <aside class="sidebar">
+        <div class="sidebar__brand">
+          <span class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3.25 18.5 6v5.15c0 4.28-2.64 7.83-6.5 9.6-3.86-1.77-6.5-5.32-6.5-9.6V6L12 3.25Z"></path>
+            </svg>
+          </span>
+          <span>
+            <strong>DBShield</strong>
+            <small>Admin Portal</small>
+          </span>
+        </div>
 
-        </div>
-        <div class="brand-name">
-          <h1>DBShield</h1>
-          <p>Admin Portal</p>
-        </div>
-      </div>
+        <nav class="side-nav" aria-label="Main navigation">
+          <a class="side-nav__item side-nav__item--active" href="admin-dashboard.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="4" y="4" width="6" height="6" rx="1"></rect>
+              <rect x="14" y="4" width="6" height="6" rx="1"></rect>
+              <rect x="4" y="14" width="6" height="6" rx="1"></rect>
+              <rect x="14" y="14" width="6" height="6" rx="1"></rect>
+            </svg>
+            Dashboard
+          </a>
+          <a class="side-nav__item" href="admin-search.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            Admin Search
+          </a>
+          <a class="side-nav__item" href="#">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            Manage Users
+          </a>
+          <a class="side-nav__item" href="#">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+              <path d="M3 5v14a9 3 0 0 0 18 0V5"></path>
+              <path d="M3 12a9 3 0 0 0 18 0"></path>
+            </svg>
+            Manage Data
+          </a>
+        </nav>
 
-      <div class="sidebar-main">
-        <div class="sidebar-item active">
-          <a href="#">
-            <span>Dashboard</span>
-          </a>
+        <div class="logout">
+            <a class="side-nav__item" href="../auth/sign_in/index.html">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <path d="M16 17l5-5-5-5"></path>
+                <path d="M21 12H9"></path>
+              </svg>
+              Log Out
+            </a>
         </div>
-        <div class="sidebar-item">
-          <a href="#">
-            <span>Admin Search</span>
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#">
-            <span>Manage Users</span>
-          </a>
-        </div>
-        <div class="sidebar-item">
-          <a href="#">
-            <span>Manage Data</span>
-          </a>
-        </div>
-        <div class="sidebar-footer">
-          <a href="../auth/sign_in/index.html">
-            <span>Log Out</span>
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="main-content">
-      <main>
-        <div class="content-header">
+      </aside>
+
+      <main class="content">
+        <header class="page-title">
           <h1>Admin Dashboard</h1>
           <p>Healthcare Data Protection Overview</p>
-        </div>
+        </header>
+
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-label">
-              Total Users
+            <div class="stat-card__header">
+              <div>
+                <div class="stat-card__label">Total Users</div>
+                <div class="stat-card__value" id="stat-total-users">247</div> <!-- waiting for data -->
+              </div>
+              <span class="stat-card__icon stat-card__icon--blue" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </span>
             </div>
-            <div class="stat-value">
-              247
+            <div class="stat-card__trend stat-card__trend--positive">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 17 17 7"></path>
+                <path d="M7 7h10v10"></path>
+              </svg>
+              <strong>+12</strong> this month <!-- waiting for data -->
             </div>
           </div>
+
           <div class="stat-card">
-            <div class="stat-label">
-              Protected Records
+            <div class="stat-card__header">
+              <div>
+                <div class="stat-card__label">Protected Records</div>
+                <div class="stat-card__value" id="stat-protected-records">1,834</div> <!-- waiting for data -->
+              </div>
+              <span class="stat-card__icon stat-card__icon--blue" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                  <path d="M3 5v14a9 3 0 0 0 18 0V5"></path>
+                  <path d="M3 12a9 3 0 0 0 18 0"></path>
+                </svg>
+              </span>
             </div>
-            <div class="stat-value">
-              1,834
+            <div class="stat-card__trend stat-card__trend--positive">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 17 17 7"></path>
+                <path d="M7 7h10v10"></path>
+              </svg>
+              <strong>+156</strong> updated <!-- waiting for data -->
             </div>
           </div>
+
           <div class="stat-card">
-            <div class="stat-label">
-              Access Requests
+            <div class="stat-card__header">
+              <div>
+                <div class="stat-card__label">Access Requests</div>
+                <div class="stat-card__value" id="stat-access-requests">43</div> <!-- waiting for data -->
+              </div>
+              <span class="stat-card__icon stat-card__icon--orange" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+              </span>
             </div>
-            <div class="stat-value">
-              43
+            <div class="stat-card__trend stat-card__trend--warning"> <!-- waiting for data -->
+              8 pending review 
             </div>
           </div>
+
           <div class="stat-card">
-            <div class="stat-label">
-              Security Status
+            <div class="stat-card__header">
+              <div>
+                <div class="stat-card__label">Security Status</div>
+                <div class="stat-card__value stat-card__value--positive" id="stat-security-status">High</div> 
+              </div>
+              <span class="stat-card__icon stat-card__icon--green" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 3.25 18.5 6v5.15c0 4.28-2.64 7.83-6.5 9.6-3.86-1.77-6.5-5.32-6.5-9.6V6L12 3.25Z"></path>
+                </svg>
+              </span>
             </div>
-            <div class="stat-value">
-              High
+            <div class="stat-card__trend stat-card__trend--muted">
+              All systems operational
             </div>
           </div>
         </div>
-        <div class="quick-access-wrapper">
+
+        <section class="quick-access-card">
           <h2>Quick Access</h2>
           <div class="quick-grid">
-            <div class="quick-card">
-              <div class="quick-card-label">
-                Manage Users
-              </div>
-              <div class="quick-card-text">
-                Add, edit, or remove users
-              </div>
-            </div>
-            <div class="quick-card">
-              <div class="quick-card-label">
-                Manage Data
-              </div>
-              <div class="quick-card-text">
-                Configure protection levels
-              </div>
-            </div>
-            <div class="quick-card">
-              <div class="quick-card-label">
-                Search Records
-              </div>
-              <div class="quick-card-text">
-                Admin search with full access
-              </div>
-            </div>
+            <a class="quick-card" href="#">
+              <span class="quick-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </span>
+              <span class="quick-card__text">
+                <span class="quick-card__label">Manage Users</span>
+                <span class="quick-card__desc">Add, edit, or remove users</span>
+              </span>
+              <span class="quick-card__arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
+
+            <a class="quick-card" href="#">
+              <span class="quick-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                  <path d="M3 5v14a9 3 0 0 0 18 0V5"></path>
+                  <path d="M3 12a9 3 0 0 0 18 0"></path>
+                </svg>
+              </span>
+              <span class="quick-card__text">
+                <span class="quick-card__label">Manage Data</span>
+                <span class="quick-card__desc">Configure protection levels</span>
+              </span>
+              <span class="quick-card__arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
+
+            <a class="quick-card quick-card--green" href="#">
+              <span class="quick-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 3.25 18.5 6v5.15c0 4.28-2.64 7.83-6.5 9.6-3.86-1.77-6.5-5.32-6.5-9.6V6L12 3.25Z"></path>
+                </svg>
+              </span>
+              <span class="quick-card__text">
+                <span class="quick-card__label">Security Settings</span>
+                <span class="quick-card__desc">View system security status</span>
+              </span>
+              <span class="quick-card__arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
+
+            <a class="quick-card" href="admin-search.html">
+              <span class="quick-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+              </span>
+              <span class="quick-card__text">
+                <span class="quick-card__label">Search Records</span>
+                <span class="quick-card__desc">Admin search with full access</span>
+              </span>
+              <span class="quick-card__arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
           </div>
-        </div>
+        </section>
       </main>
     </div>
   </body>
+</html>

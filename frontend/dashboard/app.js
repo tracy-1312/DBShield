@@ -127,3 +127,119 @@ if (document.body.dataset.page === "search") {
 
   renderSearchResults();
 }
+
+/* ADMIN SEARCH PAGE — full access, filtered by classification level instead of permitted/restricted */
+
+const adminRecords = [
+  {
+    id: "PT-00123",
+    name: "John Smith",
+    dob: "1985-03-15",
+    category: "General",
+    level: 2,
+    assignedTo: "Dr. Carter"
+  },
+  {
+    id: "PT-00456",
+    name: "Sarah Johnson",
+    dob: "1992-07-22",
+    category: "Cardiology",
+    level: 1,
+    assignedTo: "Dr. Smith"
+  },
+  {
+    id: "PT-00789",
+    name: "Michael Brown",
+    dob: "1978-11-30",
+    category: "Oncology",
+    level: 3,
+    assignedTo: "Dr. Williams"
+  },
+  {
+    id: "PT-00234",
+    name: "Emily Davis",
+    dob: "2001-05-18",
+    category: "Pediatrics",
+    level: 1,
+    assignedTo: "Dr. Johnson"
+  },
+  {
+    id: "PT-00567",
+    name: "Robert Wilson",
+    dob: "1965-09-10",
+    category: "Neurology",
+    level: 4,
+    assignedTo: "Dr. Brown"
+  }
+];
+
+let levelFilter = "all";
+
+function adminActionCell(record) {
+  return `
+    <a class="action-button action-button--view" href="record-detail.html?id=${record.id}" aria-label="View or edit ${record.name}">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+      </svg>
+      View/Edit
+    </a>
+  `;
+}
+
+function renderAdminSearchResults() {
+  const body = document.querySelector("#records-body");
+  if (!body) {
+    return;
+  }
+
+  const query = document.querySelector("#record-search").value.trim().toLowerCase();
+  const filtered = adminRecords.filter((record) => {
+    const matchesQuery = !query || [
+      record.id,
+      record.name,
+      record.dob,
+      record.category,
+      `level ${record.level}`,
+      record.assignedTo
+    ].join(" ").toLowerCase().includes(query);
+
+    const matchesLevel = levelFilter === "all" || record.level === Number(levelFilter);
+    return matchesQuery && matchesLevel;
+  });
+
+  body.innerHTML = filtered.map((record) => `
+    <tr>
+      <td><a class="patient-link" href="record-detail.html?id=${record.id}">${wrapId(record.id)}</a></td>
+      <td>${record.name.replace(" ", "<br>")}</td>
+      <td>${record.dob.replaceAll("-", "-<br>")}</td>
+      <td>${record.category}</td>
+      <td>
+        <span class="access-pill access-pill--level-${record.level}">
+          Level ${record.level}
+        </span>
+      </td>
+      <td>${record.assignedTo}</td>
+      <td>${adminActionCell(record)}</td>
+    </tr>
+  `).join("");
+
+  document.querySelector("#results-count").textContent = `${filtered.length} ${filtered.length === 1 ? "record" : "records"} found`;
+}
+
+if (document.body.dataset.page === "admin-search") {
+  document.querySelector("#record-search").addEventListener("input", renderAdminSearchResults);
+  document.querySelector("#search-button").addEventListener("click", renderAdminSearchResults);
+
+  document.querySelectorAll("[data-level-filter]").forEach((button) => {
+    button.addEventListener("click", () => {
+      levelFilter = button.dataset.levelFilter;
+      document.querySelectorAll("[data-level-filter]").forEach((item) => {
+        item.classList.toggle("chip--active", item === button);
+      });
+      renderAdminSearchResults();
+    });
+  });
+
+  renderAdminSearchResults();
+}

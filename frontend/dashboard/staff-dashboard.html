@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DBShield - Staff Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body data-page="staff-dashboard">
+    <div class="db-layout">
+      <aside class="sidebar">
+        <div class="sidebar__brand">
+          <span class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3.25 18.5 6v5.15c0 4.28-2.64 7.83-6.5 9.6-3.86-1.77-6.5-5.32-6.5-9.6V6L12 3.25Z"></path>
+            </svg>
+          </span>
+          <span>
+            <strong>DBShield</strong>
+            <small>Staff Portal</small>
+          </span>
+        </div>
+
+        <nav class="side-nav" aria-label="Main navigation">
+          <a class="side-nav__item side-nav__item--active" href="staff-dashboard.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="4" y="4" width="6" height="6" rx="1"></rect>
+              <rect x="14" y="4" width="6" height="6" rx="1"></rect>
+              <rect x="4" y="14" width="6" height="6" rx="1"></rect>
+              <rect x="14" y="14" width="6" height="6" rx="1"></rect>
+            </svg>
+            Dashboard
+          </a>
+          <a class="side-nav__item" href="staff-search.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-3.5-3.5"></path>
+            </svg>
+            Search
+          </a>
+        </nav>
+
+        <div class="logout">
+            <a class="side-nav__item" href="../auth/sign_in/index.html">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <path d="M16 17l5-5-5-5"></path>
+                <path d="M21 12H9"></path>
+              </svg>
+              Log Out
+            </a>
+        </div>
+      </aside>
+
+      <main class="content">
+        <header class="page-title">
+          <h1>Staff Dashboard</h1>
+          <p>Access and manage patient information</p>
+        </header>
+
+        <div class="stats-grid stats-grid--three">
+          <div class="stat-card">
+            <div class="stat-card__header">
+              <div>
+                <div class="stat-card__label">Accessible Records</div>
+                <div class="stat-card__value" id="stat-accessible-records">156</div>
+              </div>
+              <span class="stat-card__icon stat-card__icon--blue" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path>
+                  <path d="M14 2v6h6"></path>
+                  <path d="M16 13H8"></path>
+                  <path d="M16 17H8"></path>
+                  <path d="M10 9H8"></path>
+                </svg>
+              </span>
+            </div>
+            <div class="stat-card__trend stat-card__trend--muted">
+              Based on your permissions
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card__header">
+              <div>
+                <div class="stat-card__label">Recent Searches</div>
+                <div class="stat-card__value" id="stat-recent-searches">12</div>
+              </div>
+              <span class="stat-card__icon stat-card__icon--blue" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="7"></circle>
+                  <path d="m20 20-3.5-3.5"></path>
+                </svg>
+              </span>
+            </div>
+            <div class="stat-card__trend stat-card__trend--muted">
+              Last 7 days
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card__header">
+              <div>
+                <div class="stat-card__label">Pending Updates</div>
+                <div class="stat-card__value" id="stat-pending-updates">5</div>
+              </div>
+              <span class="stat-card__icon stat-card__icon--orange" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </span>
+            </div>
+            <div class="stat-card__trend stat-card__trend--muted">
+              Require your attention
+            </div>
+          </div>
+        </div>
+
+        <section class="quick-access-card">
+          <h2>Quick Access</h2>
+          <div class="quick-grid">
+            <a class="quick-card" href="staff-search.html">
+              <span class="quick-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="7"></circle>
+                  <path d="m20 20-3.5-3.5"></path>
+                </svg>
+              </span>
+              <span class="quick-card__text">
+                <span class="quick-card__label">Search Records</span>
+                <span class="quick-card__desc">Find patient data</span>
+              </span>
+              <span class="quick-card__arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
+          </div>
+        </section>
+
+        <section class="results-card">
+          <div class="card-header">
+            <h2>Recent Activity</h2>
+          </div>
+          <div class="table-scroll">
+            <table class="records-table">
+              <caption>Recent staff activity</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Action</th>
+                  <th scope="col">Record ID</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody id="activity-body">
+                <tr>
+                  <td>2026-05-17</td>
+                  <td>Viewed</td>
+                  <td><a class="patient-link" href="record-detail.html?id=PT-00123">PT-00123</a></td>
+                  <td><span class="access-pill access-pill--permitted">✓ Success</span></td>
+                </tr>
+                <tr>
+                  <td>2026-05-17</td>
+                  <td>Updated</td>
+                  <td><a class="patient-link" href="record-detail.html?id=PT-00456">PT-00456</a></td>
+                  <td><span class="access-pill access-pill--permitted">✓ Success</span></td>
+                </tr>
+                <tr>
+                  <td>2026-05-16</td>
+                  <td>Searched</td>
+                  <td><a class="patient-link" href="record-detail.html?id=PT-00789">PT-00789</a></td>
+                  <td><span class="access-pill access-pill--permitted">✓ Success</span></td>
+                </tr>
+                <tr>
+                  <td>2026-05-16</td>
+                  <td>Viewed</td>
+                  <td><a class="patient-link" href="record-detail.html?id=PT-00234">PT-00234</a></td>
+                  <td><span class="access-pill access-pill--permitted">✓ Success</span></td>
+                </tr>
+                <tr>
+                  <td>2026-05-15</td>
+                  <td>Updated</td>
+                  <td><a class="patient-link" href="record-detail.html?id=PT-00567">PT-00567</a></td>
+                  <td><span class="access-pill access-pill--permitted">✓ Success</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
