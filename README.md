@@ -29,7 +29,7 @@ backend/venv/bin/python backend/reset_demo_passwords.py
 1. Open Terminal and go to the project folder:
 
 ```bash
-cd /Users/kunlangli/Documents/Codex/DBShield-dev
+cd <path-to-your-project>
 ```
 
 2. Start the Flask backend:
