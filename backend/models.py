@@ -27,6 +27,13 @@ class User(Base):
         DateTime, nullable=False, server_default=func.now()
     )
 
+    # --- Added for 2FA / session timeout / password reset ---
+    two_factor_secret: Mapped[Optional[str]] = mapped_column(EncryptedText)
+    two_factor_enabled: Mapped[bool] = mapped_column(default=False)
+    reset_token_hash: Mapped[Optional[str]] = mapped_column(String(64))
+    reset_token_expiry: Mapped[Optional[datetime]] = mapped_column(DateTime)
+    failed_2fa_count: Mapped[int] = mapped_column(Integer, default=0)
+
     access_logs: Mapped[list["AccessLog"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )
@@ -49,7 +56,7 @@ class PatientRecord(Base):
 
     # Encrypted at rest in step 2 — stays Text, but holds a Fernet token
     # rather than readable notes.
-    
+
     medical_notes: Mapped[Optional[str]] = mapped_column(EncryptedText)
     assigned_doctor: Mapped[Optional[str]] = mapped_column(String(100))
     last_modified: Mapped[datetime] = mapped_column(
