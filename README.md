@@ -17,6 +17,13 @@ Staff Level 3: mbrown / password123
 Viewer Level 3: rwilson / password123
 ```
 
+The demo password is retained for the seeded presentation accounts. Any new
+password created through Admin > Manage Users must meet the current password
+policy: at least 12 characters, no more than 72 UTF-8 bytes, and at least one
+uppercase letter, lowercase letter, number, and symbol. It must also avoid the
+username, email name, and common passwords. The form can generate a secure
+16-character suggestion and the backend enforces the same requirements.
+
 If your local database already existed before this update, reset the demo passwords with:
 
 ```bash
@@ -57,3 +64,10 @@ Admin:
 jsmith / password123
 ```
 
+## Password policy tests
+
+Run the standalone policy tests from the repository root:
+
+```bash
+backend/venv/bin/python -m unittest discover -s backend -p "test*.py"
+```

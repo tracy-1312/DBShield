@@ -128,10 +128,48 @@
                 <option value="4">Level 4</option>
               </select>
             </label>
-            <label>
-              <span>Password</span>
-              <input id="user-password" type="password" placeholder="Enter password">
-            </label>
+            <div class="management-field management-form__wide">
+              <div class="password-field-header">
+                <label for="user-password">Password</label>
+                <div class="password-actions">
+                  <button class="password-action" type="button" id="generate-password-button">Generate strong password</button>
+                  <button class="password-action" type="button" id="copy-password-button">Copy</button>
+                </div>
+              </div>
+              <div class="password-input-row">
+                <input
+                  id="user-password"
+                  type="password"
+                  placeholder="Enter a strong password"
+                  autocomplete="new-password"
+                  minlength="12"
+                  maxlength="72"
+                  aria-describedby="password-strength password-requirements"
+                  spellcheck="false"
+                >
+                <button
+                  class="password-visibility"
+                  type="button"
+                  id="toggle-password-visibility"
+                  aria-controls="user-password"
+                  aria-label="Show password"
+                  aria-pressed="false"
+                >Show</button>
+              </div>
+              <div class="password-strength" data-strength="empty">
+                <div class="password-strength__track" aria-hidden="true">
+                  <span id="password-strength-bar"></span>
+                </div>
+                <span id="password-strength" role="status" aria-live="polite">Enter a password to see its strength.</span>
+              </div>
+              <ul class="password-requirements" id="password-requirements">
+                <li data-password-rule="length">At least 12 characters (72-byte maximum)</li>
+                <li data-password-rule="case">Uppercase and lowercase letters</li>
+                <li data-password-rule="number">At least one number</li>
+                <li data-password-rule="symbol">At least one symbol</li>
+                <li data-password-rule="personal">No username, email name, or common password</li>
+              </ul>
+            </div>
             <p class="management-message" id="user-form-message" role="status"></p>
             <div class="management-form-actions">
               <button class="primary-button" type="submit" id="user-submit-button">Create User</button>

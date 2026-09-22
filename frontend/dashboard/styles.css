@@ -81,6 +81,7 @@ svg {
 }
 
 .content {
+  min-width: 0;
   padding: 32px;
 }
 
@@ -96,6 +97,7 @@ svg {
   display: grid;
   grid-template-rows: 101px 1fr 81px;
   min-height: 100vh;
+  min-width: 0;
   position: sticky;
   top: 0;
 }
@@ -961,6 +963,7 @@ svg {
   border: 1px solid var(--line);
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+  min-width: 0;
   overflow: hidden;
 }
 
@@ -1033,6 +1036,17 @@ svg {
   gap: 8px;
 }
 
+.management-field {
+  display: grid;
+  gap: 10px;
+}
+
+.management-field > label {
+  color: #4b5563;
+  font-size: 15px;
+  font-weight: 700;
+}
+
 .management-form input,
 .management-form select,
 .management-form textarea {
@@ -1049,6 +1063,155 @@ svg {
   min-height: 96px;
   padding: 12px 14px;
   resize: vertical;
+}
+
+.password-field-header {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.password-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.password-action {
+  background: transparent;
+  border: 0;
+  color: var(--primary);
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 2px 0;
+}
+
+.password-action:hover {
+  text-decoration: underline;
+}
+
+.password-action:focus-visible,
+.password-visibility:focus-visible {
+  outline: 3px solid rgba(0, 91, 255, 0.2);
+  outline-offset: 2px;
+}
+
+.password-input-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 68px;
+}
+
+.management-form .password-input-row input {
+  border-radius: 8px 0 0 8px;
+  min-width: 0;
+  width: 100%;
+}
+
+.password-visibility {
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-left: 0;
+  border-radius: 0 8px 8px 0;
+  color: #374151;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.password-input-row:focus-within input,
+.password-input-row:focus-within .password-visibility {
+  border-color: var(--primary);
+}
+
+.password-strength {
+  align-items: center;
+  color: var(--muted);
+  display: grid;
+  font-size: 14px;
+  font-weight: 600;
+  gap: 12px;
+  grid-template-columns: 140px minmax(0, 1fr);
+}
+
+.password-strength__track {
+  background: #e5e7eb;
+  border-radius: 4px;
+  height: 7px;
+  overflow: hidden;
+}
+
+.password-strength__track span {
+  background: #9ca3af;
+  display: block;
+  height: 100%;
+  transition: width 0.2s ease, background-color 0.2s ease;
+  width: 0;
+}
+
+.password-strength[data-strength="weak"] {
+  color: var(--red);
+}
+
+.password-strength[data-strength="weak"] .password-strength__track span {
+  background: var(--red);
+}
+
+.password-strength[data-strength="medium"] {
+  color: #a16207;
+}
+
+.password-strength[data-strength="medium"] .password-strength__track span {
+  background: #d97706;
+}
+
+.password-strength[data-strength="strong"] {
+  color: var(--green);
+}
+
+.password-strength[data-strength="strong"] .password-strength__track span {
+  background: var(--green);
+}
+
+.password-requirements {
+  display: grid;
+  gap: 8px 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0;
+}
+
+.password-requirements li {
+  align-items: flex-start;
+  color: #6b7280;
+  display: flex;
+  font-size: 13px;
+  font-weight: 500;
+  gap: 8px;
+  line-height: 18px;
+}
+
+.password-requirements li::before {
+  background: #d1d5db;
+  border-radius: 50%;
+  content: "";
+  flex: 0 0 auto;
+  height: 8px;
+  margin-top: 5px;
+  width: 8px;
+}
+
+.password-requirements li[data-met="true"] {
+  color: #166534;
+}
+
+.password-requirements li[data-met="true"]::before {
+  background: var(--green);
 }
 
 .management-form__wide,
@@ -1153,6 +1316,17 @@ svg {
   }
 
   .management-form {
+    grid-template-columns: 1fr;
+  }
+
+  .password-field-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .password-strength,
+  .password-requirements {
     grid-template-columns: 1fr;
   }
 }

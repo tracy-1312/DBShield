@@ -20,6 +20,7 @@ load_dotenv(Path(__file__).with_name(".env"))
 
 from backend.db import get_session
 from backend.models import PatientRecord, User
+from backend.password_policy import password_validation_errors
 from backend.search import get_record, log_action, search_records as run_search
 
 ALLOWED_ORIGINS = {
@@ -126,6 +127,14 @@ def require_admin(db_session):
 
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+
+def password_error_response(errors: list[str]):
+    return jsonify({
+        "status": "error",
+        "message": f"Password is not strong enough: {'; '.join(errors)}.",
+        "password_errors": errors,
+    }), 400
 
 
 def role_label(role: str) -> str:
@@ -307,6 +316,17 @@ def admin_users():
             if missing:
                 return jsonify({"status": "error", "message": f"Missing fields: {', '.join(missing)}"}), 400
 
+            username = str(data.get("username") or "").strip()
+            email = str(data.get("email") or "").strip()
+            password = str(data.get("password") or "")
+            password_errors = password_validation_errors(
+                password,
+                username=username,
+                email=email,
+            )
+            if password_errors:
+                return password_error_response(password_errors)
+
             try:
                 clearance_level = int(data.get("clearance_level"))
             except (TypeError, ValueError):
@@ -320,10 +340,10 @@ def admin_users():
                 return jsonify({"status": "error", "message": "Invalid role"}), 400
 
             new_user = User(
-                username=str(data.get("username") or "").strip(),
-                password_hash=hash_password(str(data.get("password") or "")),
+                username=username,
+                password_hash=hash_password(password),
                 full_name=str(data.get("full_name") or "").strip(),
-                email=str(data.get("email") or "").strip(),
+                email=email,
                 role=role,
                 clearance_level=clearance_level,
             )
@@ -362,6 +382,18 @@ def admin_user_detail(user_id):
             return jsonify({"status": "success", "message": "User deleted"})
 
         data = request.get_json(silent=True) or {}
+        password = str(data.get("password") or "")
+        if password.strip():
+            candidate_username = str(data.get("username", target.username) or "").strip()
+            candidate_email = str(data.get("email", target.email) or "").strip()
+            password_errors = password_validation_errors(
+                password,
+                username=candidate_username,
+                email=candidate_email,
+            )
+            if password_errors:
+                return password_error_response(password_errors)
+
         if "username" in data:
             target.username = str(data.get("username") or "").strip()
         if "full_name" in data:
@@ -381,8 +413,8 @@ def admin_user_detail(user_id):
             if clearance_level < 1 or clearance_level > 4:
                 return jsonify({"status": "error", "message": "Classification level must be between 1 and 4"}), 400
             target.clearance_level = clearance_level
-        if str(data.get("password") or "").strip():
-            target.password_hash = hash_password(str(data.get("password") or ""))
+        if password.strip():
+            target.password_hash = hash_password(password)
 
         try:
             db_session.flush()

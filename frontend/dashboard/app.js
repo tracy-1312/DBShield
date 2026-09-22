@@ -379,6 +379,142 @@ function managementMessage(selector, message, tone = "neutral") {
   element.dataset.tone = tone;
 }
 
+const PASSWORD_POLICY = Object.freeze({
+  minimumLength: 12,
+  maximumBytes: 72,
+  generatedLength: 16,
+});
+
+const COMMON_PASSWORDS = new Set([
+  "12345678",
+  "admin123!",
+  "changeme123!",
+  "letmein123!",
+  "password",
+  "password123",
+  "password123!",
+  "qwerty123!",
+  "welcome123!",
+]);
+
+function passwordIdentityTokens(username, email) {
+  return [username, String(email || "").split("@")[0]]
+    .map((value) => String(value || "").trim().toLowerCase())
+    .filter((value) => value.length >= 3);
+}
+
+function evaluatePassword(password, username = "", email = "") {
+  const value = String(password || "");
+  const folded = value.toLowerCase();
+  const identityTokens = passwordIdentityTokens(username, email);
+  const rules = {
+    length: Array.from(value).length >= PASSWORD_POLICY.minimumLength
+      && new TextEncoder().encode(value).length <= PASSWORD_POLICY.maximumBytes,
+    case: /[A-Z]/.test(value) && /[a-z]/.test(value),
+    number: /\d/.test(value),
+    symbol: /[^A-Za-z0-9\s]/.test(value),
+    personal: !COMMON_PASSWORDS.has(folded)
+      && !identityTokens.some((token) => folded.includes(token)),
+  };
+
+  const passed = Object.values(rules).filter(Boolean).length;
+  return {
+    rules,
+    passed,
+    valid: passed === Object.keys(rules).length,
+  };
+}
+
+function updatePasswordGuidance() {
+  const input = document.querySelector("#user-password");
+  const strength = document.querySelector(".password-strength");
+  const strengthLabel = document.querySelector("#password-strength");
+  const strengthBar = document.querySelector("#password-strength-bar");
+  if (!input || !strength || !strengthLabel || !strengthBar) return false;
+
+  const password = input.value;
+  const isEdit = document.querySelector("#add-user-card")?.dataset.mode === "edit";
+  const evaluation = evaluatePassword(
+    password,
+    document.querySelector("#user-username")?.value,
+    document.querySelector("#user-email")?.value,
+  );
+
+  document.querySelectorAll("[data-password-rule]").forEach((item) => {
+    item.dataset.met = password && evaluation.rules[item.dataset.passwordRule] ? "true" : "false";
+  });
+
+  if (!password) {
+    strength.dataset.strength = "empty";
+    strengthBar.style.width = "0";
+    strengthLabel.textContent = isEdit
+      ? "Leave blank to keep the current password."
+      : "Enter a password to see its strength.";
+    input.setCustomValidity("");
+    input.setAttribute("aria-invalid", "false");
+    return isEdit;
+  }
+
+  let level = "weak";
+  let label = "Weak password";
+  if (evaluation.valid) {
+    level = "strong";
+    label = "Strong password";
+  } else if (evaluation.passed >= 3) {
+    level = "medium";
+    label = "Almost there";
+  }
+
+  strength.dataset.strength = level;
+  strengthBar.style.width = `${evaluation.passed * 20}%`;
+  strengthLabel.textContent = `${label} - ${evaluation.passed} of 5 requirements met.`;
+  input.setCustomValidity(evaluation.valid ? "" : "Use a password that meets all requirements.");
+  input.setAttribute("aria-invalid", String(!evaluation.valid));
+  return evaluation.valid;
+}
+
+function secureRandomIndex(maximum) {
+  const range = 0x100000000;
+  const limit = range - (range % maximum);
+  const values = new Uint32Array(1);
+  let value;
+
+  do {
+    crypto.getRandomValues(values);
+    value = values[0];
+  } while (value >= limit);
+
+  return value % maximum;
+}
+
+function secureShuffle(characters) {
+  const result = [...characters];
+  for (let index = result.length - 1; index > 0; index -= 1) {
+    const swapIndex = secureRandomIndex(index + 1);
+    [result[index], result[swapIndex]] = [result[swapIndex], result[index]];
+  }
+  return result.join("");
+}
+
+function generateStrongPassword(username = "", email = "") {
+  const groups = [
+    "ABCDEFGHJKLMNPQRSTUVWXYZ",
+    "abcdefghijkmnopqrstuvwxyz",
+    "23456789",
+    "!@#$%&*+-=?",
+  ];
+  const allCharacters = groups.join("");
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    const password = groups.map((group) => group[secureRandomIndex(group.length)]);
+    while (password.length < PASSWORD_POLICY.generatedLength) {
+      password.push(allCharacters[secureRandomIndex(allCharacters.length)]);
+    }
+    const candidate = secureShuffle(password);
+    if (evaluatePassword(candidate, username, email).valid) return candidate;
+  }
+  throw new Error("Could not generate a password for this account.");
+}
+
 function roleDisplay(user) {
   return user.role_label || {
     admin: "Admin",
@@ -394,15 +530,23 @@ function roleClass(user) {
 function setUserFormOpen(open, mode = "create") {
   const card = document.querySelector("#add-user-card");
   if (!card) return;
+  const passwordInput = document.querySelector("#user-password");
+  const visibilityButton = document.querySelector("#toggle-password-visibility");
   card.hidden = !open;
+  card.dataset.mode = mode;
   document.querySelector("#user-form-title").textContent = mode === "edit" ? "Edit User" : "Add New User";
   document.querySelector("#user-submit-button").textContent = mode === "edit" ? "Save Changes" : "Create User";
-  document.querySelector("#user-password").required = mode !== "edit";
+  passwordInput.required = mode !== "edit";
+  passwordInput.type = "password";
+  visibilityButton.textContent = "Show";
+  visibilityButton.setAttribute("aria-label", "Show password");
+  visibilityButton.setAttribute("aria-pressed", "false");
   if (!open) {
     document.querySelector("#user-form").reset();
     document.querySelector("#user-id").value = "";
     managementMessage("#user-form-message", "");
   }
+  updatePasswordGuidance();
 }
 
 function userPayload() {
@@ -493,9 +637,56 @@ async function loadManagedUsers() {
 }
 
 function wireManageUsersPage() {
+  const passwordInput = document.querySelector("#user-password");
+  const visibilityButton = document.querySelector("#toggle-password-visibility");
+
   document.querySelector("#add-user-toggle").addEventListener("click", () => setUserFormOpen(true, "create"));
   document.querySelector("#cancel-user-button").addEventListener("click", () => setUserFormOpen(false));
   document.querySelector("#cancel-user-x").addEventListener("click", () => setUserFormOpen(false));
+  passwordInput.addEventListener("input", updatePasswordGuidance);
+  document.querySelector("#user-username").addEventListener("input", updatePasswordGuidance);
+  document.querySelector("#user-email").addEventListener("input", updatePasswordGuidance);
+
+  document.querySelector("#generate-password-button").addEventListener("click", () => {
+    try {
+      passwordInput.value = generateStrongPassword(
+        document.querySelector("#user-username").value,
+        document.querySelector("#user-email").value,
+      );
+      updatePasswordGuidance();
+      managementMessage(
+        "#user-form-message",
+        "Strong password generated. Copy it before saving.",
+        "success",
+      );
+      passwordInput.focus();
+    } catch {
+      managementMessage("#user-form-message", "Secure password generation is unavailable in this browser.", "error");
+    }
+  });
+
+  document.querySelector("#copy-password-button").addEventListener("click", async () => {
+    if (!passwordInput.value) {
+      managementMessage("#user-form-message", "Enter or generate a password before copying it.", "error");
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(passwordInput.value);
+      managementMessage("#user-form-message", "Password copied to clipboard.", "success");
+    } catch {
+      managementMessage("#user-form-message", "Could not copy the password. Select and copy it manually.", "error");
+    }
+  });
+
+  visibilityButton.addEventListener("click", () => {
+    const showPassword = passwordInput.type === "password";
+    passwordInput.type = showPassword ? "text" : "password";
+    visibilityButton.textContent = showPassword ? "Hide" : "Show";
+    visibilityButton.setAttribute("aria-label", showPassword ? "Hide password" : "Show password");
+    visibilityButton.setAttribute("aria-pressed", String(showPassword));
+    passwordInput.focus();
+  });
+
   document.querySelector("#user-form").addEventListener("submit", async (event) => {
     event.preventDefault();
     const userId = document.querySelector("#user-id").value;
@@ -503,6 +694,11 @@ function wireManageUsersPage() {
     const payload = userPayload();
     if (!isEdit && !payload.password) {
       managementMessage("#user-form-message", "Password is required for new users.", "error");
+      return;
+    }
+    if (payload.password && !updatePasswordGuidance()) {
+      managementMessage("#user-form-message", "Use a password that meets all five security requirements.", "error");
+      passwordInput.focus();
       return;
     }
     managementMessage("#user-form-message", isEdit ? "Saving user..." : "Creating user...");
