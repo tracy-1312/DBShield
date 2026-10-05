@@ -14,6 +14,13 @@ CREATE TABLE users (
     clearance_level INT          NOT NULL DEFAULT 1,
     created_at      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
+    -- Added for 2FA / password reset
+    two_factor_secret   TEXT         NULL,
+    two_factor_enabled  TINYINT(1)   NOT NULL DEFAULT 0,
+    reset_token_hash    VARCHAR(64)  NULL,
+    reset_token_expiry  DATETIME     NULL,
+    failed_2fa_count    INT          NOT NULL DEFAULT 0,
+
     CONSTRAINT chk_users_role
         CHECK (role IN ('admin', 'data_manager', 'viewer')),
     CONSTRAINT chk_users_clearance
@@ -67,9 +74,9 @@ CREATE TABLE access_logs (
         ON DELETE SET NULL,
 
     CONSTRAINT chk_logs_action
-        CHECK (action IN ('view', 'search', 'edit', 'denied', 'login', 'logout')),
+        CHECK (action IN ('view', 'search', 'edit', 'denied', 'login', 'logout', '2fa_verify', 'reset_request', 'password_reset')),
     CONSTRAINT chk_logs_status
-        CHECK (status IN ('success', 'denied'))
+        CHECK (status IN ('success', 'denied', 'failed', 'locked_out', 'issued', 'expired'))
 );
 
 CREATE INDEX idx_logs_user      ON access_logs (user_id);
