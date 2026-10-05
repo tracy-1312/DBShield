@@ -9,12 +9,18 @@ from backend.auth import (
     touch_session,
     generate_reset_token,
     reset_password,
+    hash_password,
     verify_password,
 )
 import os
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
+
+
+def _record_to_dict(r):
+    """Turn a SQLAlchemy row into a plain dict using only its real columns."""
+    return {c.name: getattr(r, c.name) for c in r.__table__.columns}
 
 
 @app.route('/login', methods=['POST'])
@@ -27,12 +33,14 @@ def login():
     with get_session() as db_sess:
         user = db_sess.query(User).filter_by(username=username).first()
 
-        # Simple check for now (Hardie will handle the bcrypt part)
+        # Check the password against the stored bcrypt hash
         if user and verify_password(password, user.password_hash):
+            session.clear()  # drop any leftover state from an earlier login
             session['user_id'] = user.user_id
             session['role'] = user.role
             session['clearance_level'] = user.clearance_level
             touch_session()  # starts the session-timeout clock
+            user.failed_2fa_count = 0  # a fresh login resets the 2FA lockout
 
             if user.two_factor_enabled:
                 session['awaiting_2fa'] = True
@@ -56,14 +64,19 @@ def setup_2fa():
     if not result:
         return jsonify({"status": "error", "message": "User not found"}), 404
     secret, qr_code = result
+    # lets the user confirm their first code on /2fa/verify
+    session['setting_up_2fa'] = True
     return jsonify({"status": "success", "qr_code": qr_code})
 
 
 @app.route('/2fa/verify', methods=['POST'])
 def verify_2fa():
-    # Deliberately not @require_active_session — login isn't fully
-    # complete yet at this point, gated by 'awaiting_2fa' instead.
-    if not session.get('awaiting_2fa'):
+    # Deliberately not @require_active_session: at login time the user isn't
+    # fully signed in yet. Either 'awaiting_2fa' (logging in with 2FA on) or
+    # 'setting_up_2fa' (confirming first-time setup) must be set.
+    if 'user_id' not in session or not (
+        session.get('awaiting_2fa') or session.get('setting_up_2fa')
+    ):
         return jsonify({"status": "error", "message": "No 2FA verification pending"}), 400
 
     code = request.json.get('code')
@@ -71,6 +84,8 @@ def verify_2fa():
 
     if result["status"] == "success":
         session.pop('awaiting_2fa', None)
+        session.pop('setting_up_2fa', None)
+        touch_session()
         return jsonify(result)
 
     return jsonify(result), 400
@@ -82,7 +97,7 @@ def verify_2fa():
 def request_password_reset():
     email = request.json.get('email')
     generate_reset_token(email)
-    # Same message whether or not the email exists — avoids leaking
+    # Same message whether or not the email exists, so we don't leak
     # which emails are registered.
     # TODO: actually send the token via email once that's set up.
     return jsonify({
@@ -94,8 +109,6 @@ def request_password_reset():
 @app.route('/reset-password/confirm', methods=['POST'])
 def confirm_password_reset():
     data = request.json
-    from backend.auth import hash_password
-
     success = reset_password(
         data['email'],
         data['token'],
@@ -107,7 +120,7 @@ def confirm_password_reset():
     return jsonify({"status": "error", "message": "Invalid or expired token"}), 400
 
 
-# ---------- SEARCH (now session-timeout protected) ----------
+# ---------- SEARCH (session-timeout protected) ----------
 
 @app.route('/search', methods=['GET'])
 @require_active_session
@@ -125,7 +138,7 @@ def search():
         return jsonify({
             "status": "success",
             "count": len(results),
-            "data": [r.to_dict() if hasattr(r, 'to_dict') else vars(r) for r in results]
+            "data": [r.to_dict() if hasattr(r, 'to_dict') else _record_to_dict(r) for r in results]
         })
 
 
@@ -136,4 +149,4 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=False, port=5000)
